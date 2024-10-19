@@ -2,7 +2,7 @@
 
 This project processes multiomic data (RNA-seq and ATAC-seq) from a 10X Genomics PBMC granulocyte sorted dataset. It includes data downloading, preprocessing, peak calling, differential accessibility analysis, and visualization of gene expression and chromatin accessibility correlations.
 
-##Overview
+## Overview
 This pipeline performs joint RNA-seq and ATAC-seq analysis using Seurat, ArchR, and other bioinformatics tools. The pipeline consists of the following steps:
 
 - Download raw data from 10X Genomics.
