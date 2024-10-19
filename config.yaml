@@ -1,0 +1,6 @@
+organism: "human"
+genome: ["GRCh38"]
+ref_version: "1.0"
+input_fasta: ["GRCh38.p13.genome.fa"]
+input_gtf: ["gencode.v38.annotation.gtf"]
+non_nuclear_contigs: ["chrM"]
