@@ -252,9 +252,11 @@ wordcloud(words = words,
           scale = c(3, 0.5))         # Scaling range for word sizes
 dev.off()
 
+pdf(file.path(file.fig, "FeaturePlot_degs.pdf"))
 # Now, plot UMAP with the DEG scores for each cluster
 # This assumes you want to plot the score of a specific cluster or just an average score
 # For example, let's plot the DEG score for cluster 0
 FeaturePlot(seurat_object, features = "DEG_score_01", reduction = "umap") +
   scale_color_gradient(low = "blue", high = "red") +
   labs(title = "UMAP Plot: DEG Scores for Cluster 0")
+dev.off()
