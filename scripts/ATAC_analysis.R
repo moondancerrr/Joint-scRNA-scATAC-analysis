@@ -29,7 +29,6 @@ project <- addDoubletScores(
     knnMethod = "UMAP",        # The dimensionality reduction method used
     LSIMethod = 1              # Latent semantic indexing method (default is 1)
 )
-
 # Apply quality filters
 project <- filterDoublets(project)  # Filter out doublets using default settings
 project <- subsetArchRProject(
@@ -40,6 +39,29 @@ project <- subsetArchRProject(
     project$nFrags < 30000 &
     project$nucleosomeRatio < 2
   )
+)
+
+
+# Extract fragment counts per cell for Seurat object creation
+cell_data <- getCellColData(project, select = c("nFrags", "TSSEnrichment"))
+cell_barcodes <- rownames(cell_data)  # Store cell barcodes
+
+# Assuming nFrags is analogous to "counts" here, use it to create the Seurat object
+seurat_obj <- CreateSeuratObject(counts = as.matrix(cell_data$nFrags), project = "ATAC", meta.data = cell_data)
+
+# Add mitochondrial content filtering
+seurat_obj[["percent.mt"]] <- PercentageFeatureSet(seurat_obj, pattern = "^MT-")
+
+# Filter cells based on mitochondrial content
+seurat_obj <- subset(seurat_obj, subset = percent.mt < 10)
+
+# Extract the filtered cell barcodes from Seurat
+filtered_barcodes <- colnames(seurat_obj)
+
+# Use these barcodes to subset the ArchR project
+project <- subsetArchRProject(
+  ArchRProj = project,
+  cells = filtered_barcodes
 )
 
 # Perform LSI (Linear Dimensionality Reduction)
